@@ -20,11 +20,12 @@ class_names = ['Ayam Bakar','Ayam Geprek',
 'Nasi Goreng','Pecel Lele','Rendang','Sate','Sop','Soto',
  'Telur Balado']
 
-def getCalorie():
-    nutrisi_csv = pd.read_csv('nutrisi_origin.csv')
-    Kalori = nutrisi_csv['Kalori']
-    Protein = nutrisi_csv['Protein']
-    Lemak = nutrisi_csv['Lemak']
+def getCalorie(prediction):
+    nutrisi_csv = pd.read_csv('nutrisi_origin.csv',index_col='Nama Makanan')
+    nutrisi_csv.drop(axis=1,columns='id')
+    Kalori = int(nutrisi_csv['Kalori'][prediction])
+    Protein = nutrisi_csv['Protein'][prediction]
+    Lemak = nutrisi_csv['Lemak'][prediction]
 
     return Kalori,Protein,Lemak
     
@@ -43,11 +44,12 @@ async def predict(file: UploadFile = File(...)):
     preds = model.predict(img)
     predicted_label = class_names[np.argmax(preds[0])]
 
-    Kalori,Protein,Lemak = getCalorie()
-  
-    # return f"Prediction : {np.argmax(preds[0])}"
+    Kalori,Protein,Lemak = getCalorie(predicted_label)
 
-    return {"Prediction" : predicted_label}
+    return {"Prediction" : predicted_label,
+            "Kalori" : Kalori,
+            "Protein" : Protein,
+            "Lemak" : Lemak}
 
 # img = PIL.Image.open(io.BytesIO(img)).convert('RGB')
 # img = img.resize(size=(224,224))
