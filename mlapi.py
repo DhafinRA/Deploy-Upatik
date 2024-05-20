@@ -31,8 +31,8 @@ def getCalorie(prediction):
     
 
 @app.get('/')
-async def hello():
-    return "hello"
+async def requirement_list():
+    return f"Tensorflow : {tf.__version__} || Keras : {keras.__version__}"
 
 @app.post('/predict')
 async def predict(file: UploadFile = File(...)):
