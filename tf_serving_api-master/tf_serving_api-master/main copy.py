@@ -36,12 +36,8 @@ async def predict(file: UploadFile):
         translated_prediction = label_mapping[max_index]
         translated_predictions.append(translated_prediction)
 
-    
-    if (translated_predictions[0]["name"] == 'other'):
-        translated_predictions = []
+        return {"predictions": translated_predictions}
 
-    return {"predictions": translated_predictions}
-        
 
 @app.get("/version")
 async def check_model():

@@ -46,7 +46,8 @@ def read_label_mappings_from_csv(csv_file_path):
 def image_to_base64(image):
     # Load and preprocess the image
     image = Image.open(BytesIO(image))
-    image = image.resize((224, 224))  # Resize if necessary
+    image = image.resize((224, 224))
+    image = image.convert('RGB')  # Resize if necessary
     image_array = np.array(image)
 
     # Normalize the pixel values to the range [0, 1]
